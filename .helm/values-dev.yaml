@@ -13,7 +13,7 @@ args:
 
 secretName: "tcm-media-server"
 
-&data_path : "/data/"
+dataPath: &data_path "/data/"
 
 env:
   MEDIA_SERVER_HOST: "0.0.0.0"
