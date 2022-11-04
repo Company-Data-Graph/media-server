@@ -1,6 +1,6 @@
 ARG BINARY_NAME="media-server"
 
-FROM golang:latest as build
+FROM golang:latest
 ARG BINARY_NAME
 WORKDIR /app
 
@@ -15,12 +15,12 @@ RUN go build $BINARY_NAME
 RUN chmod +x -R .
 
 
-FROM centos:7
-
-ARG BINARY_NAME
-WORKDIR /app
-
-COPY --from=build /app/${BINARY_NAME} ./${BINARY_NAME}
+#FROM centos:7
+#
+#ARG BINARY_NAME
+#WORKDIR /app
+#
+#COPY --from=build /app/${BINARY_NAME} ./${BINARY_NAME}
 
 # ENV variables example :
 ENV MEDIA_SERVER_HOST="localhost"
