@@ -1,0 +1,86 @@
+#For dev namespace
+replicaCount: 1
+
+image:
+  repository: nexus.optmoskva.ru:8444/map/tyak-golang-server
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+command: "./wait-for.sh"
+args:
+  - "10.10.150.104:3306"
+  - "--timeout=300"
+  - "--"
+  - "./tyak-server"
+
+secretName: "tcm-map"
+
+env:
+  MEDIA_SERVER_HOST: "localhost"
+  MEDIA_SERVER_PORT: 8082
+  MEDIA_SERVER_DATA_ROUTE_NAME: "/data/"
+  MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE: "data/"
+secretEnv: 
+  MEDIA_SERVER_ADMIN_PASS: "test"
+
+serviceAccount:
+  create: false
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: http
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: map.optmoskva.ru
+      paths:
+        - path: /api/map(/|$)(.*)
+          pathType: Prefix
+  tls:
+    - hosts:
+        - '*.optmoskva.ru'
+      secretName: mms-prod-mms-tls
+
+podSecurityContext:
+  fsGroup: 1007777001
+  runAsUser: 1007777001
+  runAsGroup: 1007777001
+
+livenessProbe:
+  httpGet:
+    path: /api/map/ping
+    port: http
+  periodSeconds: 10
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3          
+readinessProbe:
+  httpGet:
+    path: /api/map/ping
+    port: http
+  periodSeconds: 10
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3          
+startupProbe:
+  httpGet:
+    path: /api/map/ping
+    port: http
+  failureThreshold: 60
+  periodSeconds: 10
+
+resources:
+   limits:
+     cpu: 500m
+     memory: 256Mi
+   requests:
+     cpu: 200m
+     memory: 128Mi
