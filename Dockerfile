@@ -4,23 +4,23 @@ FROM golang:latest
 ARG BINARY_NAME
 WORKDIR /app
 
-COPY go.mod .
-COPY go.sum .
+COPY ./go.mod ./
+COPY ./go.sum ./
 
 RUN go mod download
 
-COPY . .
+COPY ./src ./
 
-RUN go build $BINARY_NAME
-RUN chmod +x -R .
+RUN go build ${BINARY_NAME}
+RUN chmod +x -R ./
 
 
-#FROM centos:7
-#
-#ARG BINARY_NAME
-#WORKDIR /app
-#
-#COPY --from=build /app/${BINARY_NAME} ./${BINARY_NAME}
+FROM centos:7
+
+ARG BINARY_NAME
+WORKDIR /app
+
+COPY --from=build /app/${BINARY_NAME} ./${BINARY_NAME}
 
 # ENV variables example :
 ENV MEDIA_SERVER_HOST="localhost"
