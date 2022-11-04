@@ -11,7 +11,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build ${BINARY_NAME}
+RUN go build ./${BINARY_NAME}
 RUN chmod +x -R .
 
 
