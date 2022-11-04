@@ -3,7 +3,7 @@
 pipeline {
     agent any
     parameters {
-        choice(name: 'SERVICE', defaultValue: 'media-server', description: 'Service what will be build and deploy')
+        string(name: 'SERVICE', defaultValue: 'media-server', description: 'Service what will be build and deploy')
         string(name: 'DOCKER_REGISTRY', defaultValue: 'nexus.optmoskva.ru:8444/tcm/media-server', description: 'Internal NEXUS docker registry URL')
         string(name: 'IMAGE_TAG', defaultValue: '', description: 'Docker tag for manual deploy')
         choice(name: 'K8S_NS', choices: ['dev', 'prod'],description: 'Environment for deploy')
