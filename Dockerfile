@@ -1,4 +1,4 @@
-ARG BINARY_NAME="media-server-bin"
+ARG BINARY_NAME="media-server"
 
 FROM golang:latest as build
 ARG BINARY_NAME
@@ -31,4 +31,4 @@ ENV MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE="data/"
 
 EXPOSE 8082
 
-CMD [ "./media-server-bin", "--mode=env" ]
+CMD [ "./media-server", "--mode=env" ]

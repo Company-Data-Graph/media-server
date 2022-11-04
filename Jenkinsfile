@@ -15,6 +15,7 @@ pipeline {
     stages {
         stage ('Checkout and create docker tag from git commit'){
             steps   {
+                cleanWs()
                 checkout([$class: 'GitSCM', 
                         branches: [[name: '*/*']],
                         userRemoteConfigs: [[url: 'git@github.com:tcmoscow/media-server.git', credentialsId: 'git-mediaServer']]])
