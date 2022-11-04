@@ -72,9 +72,7 @@ pipeline {
         }
         stage ('Helm deploy'){
             steps {
-                dir("${params.SERVICE}/.helm"){
                     deployHelm("${env.DOCKER_TAG}","$K8S_NS","$SERVICE")
-                }
             }
         }
     }
