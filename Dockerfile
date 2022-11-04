@@ -1,7 +1,7 @@
 ARG BINARY_NAME="media-server"
 
 FROM golang:latest as build
-
+ARG BINARY_NAME
 WORKDIR /app
 
 COPY go.mod .
