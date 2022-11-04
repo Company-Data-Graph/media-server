@@ -15,7 +15,8 @@ pipeline {
     stages {
         stage ('Checkout and create docker tag from git commit'){
             steps   {
-                checkout([$class: 'GitSCM',
+                checkout([$class: 'GitSCM', 
+                        branches: [[name: '*/*']],
                         userRemoteConfigs: [[url: 'git@github.com:tcmoscow/media-server.git', credentialsId: 'git-mediaServer']]])
                 sh 'git rev-parse HEAD > temp_hash'
                 script { 
