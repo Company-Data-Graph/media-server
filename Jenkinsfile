@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage ('Checkout and create docker tag from git commit'){
             steps   {
-                cleanWs()
+                //cleanWs()
                 checkout([$class: 'GitSCM', 
                         branches: [[name: '*/*']],
                         userRemoteConfigs: [[url: 'git@github.com:tcmoscow/media-server.git', credentialsId: 'git-mediaServer']]])
@@ -73,7 +73,9 @@ pipeline {
         }
         stage ('Helm deploy'){
             steps {
+                dir("./.helm"){
                     deployHelm("${env.DOCKER_TAG}","$K8S_NS","$SERVICE")
+                }
             }
         }
     }
