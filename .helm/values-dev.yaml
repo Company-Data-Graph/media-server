@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  repository: nexus.optmoskva.ru:8444/tcm/media-server
+  repository: nexus.optmoskva.ru:8444/tcm/media-server/media-server
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
