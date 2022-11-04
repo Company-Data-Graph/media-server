@@ -61,7 +61,7 @@ func (api *MediaAPI) SetCorsHeaders(rw *http.ResponseWriter) {
 
 func (api *MediaAPI) Run() {
 	// For K8S probes Ping path
-	http.HandleFunc(fmt.Sprintf("%s%s", api.prefix, "/ping"), api.Ping)
+	http.HandleFunc(fmt.Sprintf("%s%s", api.Prefix, "/ping"), api.Ping)
 	//Apps path
 	http.HandleFunc(fmt.Sprintf("%s%s", api.Prefix, api.Routes.DataRoute.Name), api.getDataByUrl)
 	http.HandleFunc(fmt.Sprintf("%s%s", api.Prefix, "/signin"), api.signIn)

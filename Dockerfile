@@ -1,6 +1,6 @@
 ARG BINARY_NAME="media-server"
 
-FROM golang:latest
+FROM golang:latest as build
 ARG BINARY_NAME
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY ./go.sum ./
 
 RUN go mod download
 
-COPY ./src ./
+COPY ./ ./
 
 RUN go build ${BINARY_NAME}
 RUN chmod +x -R ./
