@@ -2,6 +2,7 @@ package models
 
 import (
 	"os"
+	"strconv"
 
 	"gopkg.in/yaml.v2"
 )
@@ -10,7 +11,7 @@ type Config struct {
 	MediaAPIConfig MediaAPIConfig `yaml:"mediaConfing"`
 }
 
-func NewConfig(path string) (*Config, error) {
+func NewConfigYML(path string) (*Config, error) {
 	configFile, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -24,16 +25,39 @@ func NewConfig(path string) (*Config, error) {
 	return &config, nil
 }
 
+func NewConfigENV() (*Config, error) {
+	port, err := strconv.Atoi(os.Getenv("MEDIA_SERVER_PORT"))
+	if err != nil {
+		return nil, err
+	}
+	return &Config{
+		MediaAPIConfig: MediaAPIConfig{
+			Host:            os.Getenv("MEDIA_SERVER_HOST"),
+			Port:            port,
+			Prefix:          os.Getenv("MEDIA_SERVER_PREFIX"),
+			AdminPass:       os.Getenv("MEDIA_SERVER_ADMIN_PASS"),
+			StorageRootPath: os.Getenv("MEDIA_SERVER_STORAGE_ROOT_PATH"),
+			Routes: MediaAPIRoutes{
+				DataRoute: Router{
+					Name:         os.Getenv("MEDIA_SERVER_DATA_ROUTE_NAME"),
+					StorageRoute: os.Getenv("MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE"),
+				},
+			},
+		},
+	}, nil
+}
+
 type MediaAPIConfig struct {
 	Host            string         `yaml:"host"`
 	Port            int            `yaml:"port"`
+	Prefix          string         `yaml:"prefix"`
+	AdminPass       string         `yaml:"adminPass"`
 	StorageRootPath string         `yaml:"storageRootPath"`
 	Routes          MediaAPIRoutes `yaml:"routes"`
 }
 
 type MediaAPIRoutes struct {
-	ImageRoute Router `yaml:"imageRoute"`
-	VideoRoute Router `yaml:"videoRoute"`
+	DataRoute Router `yaml:"dataRoute"`
 }
 
 type Router struct {

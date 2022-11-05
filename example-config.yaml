@@ -1,0 +1,10 @@
+mediaConfing: 
+  host: "localhost"
+  port: 8082
+  prefix: "/media-server"
+  adminPass: "example"
+  storageRootPath: "./data/"
+  routes:
+    dataRoute: 
+      name: "/data/"
+      storageRoute: "/"

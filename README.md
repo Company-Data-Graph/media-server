@@ -1,30 +1,27 @@
 # Media server
 
 ## Configuration
-**Golang Version:** go1.19.2 darwin/amd64
 
-**Docker support:** none
+### Launcing flags
+`media-server --mode=env` для старта в режиме ENV-переменных
 
+`media-server --mode=yaml --config=example-config.yaml` для старта в режиме YAML-конфига
 
-## Description
-This server can send any mediafiles with using http requests.
+### YAML variables
+Example of `.yaml` configuration is aviable into `example-config.yaml`.
 
-## Setup
-### Storage root folder
-All data are stored in `./data/`. If you want to change it - use config file (`config.yml` as default).
-    
-*`./data/` file is in `.gitignore`.*
+### ENV variables
+`MEDIA_SERVER_HOST` : set server host (example: `localhost`)
 
-### Media request 
-This server version support images and videos loading
+`MEDIA_SERVER_PORT` : set server port (example: `8082`)
 
-### Images
-All images are stored in `./data/images/`. If you want to change it - use config file (`config.yaml` as default). 
+`MEDIA_SERVER_PREFIX` : set specific prefix for all API handlers (example: `/media-server`)
 
-### Videos
-All images are stored in `./data/videos/`. If you want to change it - use config file (`config.yaml` as default). 
+`MEDIA_SERVER_ADMIN_PASS` : set admin user password (will be released later)
 
-## Flags
-*-config* - path to config. Default value is `config.yaml`.
+`MEDIA_SERVER_DATA_ROUTE_NAME` : set api handler name (example: `/data/`)
 
-*-h* - get all aviable flags
+`MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE` : set folder destination (example: `/`)
+
+## JWT
+Generation `jwt-token` can be initted. This version is not usgin add, upadate and remove files from `data` directory with using API.
