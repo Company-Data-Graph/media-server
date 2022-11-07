@@ -2,27 +2,27 @@
 replicaCount: 1
 
 image:
-  repository: nexus.optmoskva.ru:8444/map/tyak-golang-server
+  repository: nexus.optmoskva.ru:8444/tcm/media-server/media-server
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-command: "./wait-for.sh"
+command: "./media-server"
 args:
-  - "10.10.150.104:3306"
-  - "--timeout=300"
-  - "--"
-  - "./tyak-server"
+  - "--mode=env"
 
-secretName: "tcm-map"
+secretName: "tcm-media-server"
+
+dataPath: &data_path "/data/"
 
 env:
-  MEDIA_SERVER_HOST: "localhost"
+  MEDIA_SERVER_HOST: "0.0.0.0"
   MEDIA_SERVER_PORT: 8082
-  MEDIA_SERVER_DATA_ROUTE_NAME: "/data/"
-  MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE: "data/"
+  MEDIA_SERVER_DATA_ROUTE_NAME: *data_path
+  MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE: *data_path
+  MEDIA_SERVER_PREFIX: "/"
 secretEnv: 
-  MEDIA_SERVER_ADMIN_PASS: "test"
+  MEDIA_SERVER_ADMIN_PASS: "mediaServerPwd"
 
 serviceAccount:
   create: false
@@ -40,10 +40,10 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: map.optmoskva.ru
+    - host: media-server.optmoskva.ru
       paths:
-        - path: /api/map(/|$)(.*)
-          pathType: Prefix
+        - path: /
+          pathType: ImplementationSpecific
   tls:
     - hosts:
         - '*.optmoskva.ru'
@@ -54,9 +54,19 @@ podSecurityContext:
   runAsUser: 1007777001
   runAsGroup: 1007777001
 
+volumes:
+  - name: data-path
+    persistentVolumeClaim:
+      claimName: media-server-prod-pvc
+
+## Configure volumeMounts
+volumeMounts:
+  - mountPath: *data_path
+    name: data-path
+
 livenessProbe:
   httpGet:
-    path: /api/map/ping
+    path: /ping
     port: http
   periodSeconds: 10
   timeoutSeconds: 10
@@ -64,7 +74,7 @@ livenessProbe:
   failureThreshold: 3          
 readinessProbe:
   httpGet:
-    path: /api/map/ping
+    path: /ping
     port: http
   periodSeconds: 10
   timeoutSeconds: 10
@@ -72,7 +82,7 @@ readinessProbe:
   failureThreshold: 3          
 startupProbe:
   httpGet:
-    path: /api/map/ping
+    path: /ping
     port: http
   failureThreshold: 60
   periodSeconds: 10

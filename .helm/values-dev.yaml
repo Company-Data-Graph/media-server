@@ -24,7 +24,6 @@ env:
 secretEnv: 
   MEDIA_SERVER_ADMIN_PASS: "mediaServerPwd"
 
-
 serviceAccount:
   create: false
 

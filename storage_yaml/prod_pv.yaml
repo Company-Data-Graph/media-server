@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-server-prod-pv
+  labels:
+    app: media-server-prod-pv
+  annotations:
+    pv.kubernetes.io/bound-by-controller: 'yes'
+spec:
+  capacity:
+    storage: 500Gi
+  nfs:
+    server: 10.10.150.111
+    path: /opt/storage/media-server-prod
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - hard
+    - nfsvers=4.0
+    - retrans=10
+  volumeMode: Filesystem
