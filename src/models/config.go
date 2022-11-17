@@ -32,35 +32,21 @@ func NewConfigENV() (*Config, error) {
 	}
 	return &Config{
 		MediaAPIConfig: MediaAPIConfig{
-			Host:            os.Getenv("MEDIA_SERVER_HOST"),
-			Port:            port,
-			Prefix:          os.Getenv("MEDIA_SERVER_PREFIX"),
-			AdminPass:       os.Getenv("MEDIA_SERVER_ADMIN_PASS"),
-			StorageRootPath: os.Getenv("MEDIA_SERVER_STORAGE_ROOT_PATH"),
-			Routes: MediaAPIRoutes{
-				DataRoute: Router{
-					Name:         os.Getenv("MEDIA_SERVER_DATA_ROUTE_NAME"),
-					StorageRoute: os.Getenv("MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE"),
-				},
-			},
+			Host:             os.Getenv("MEDIA_SERVER_HOST"),
+			Port:             port,
+			Prefix:           os.Getenv("MEDIA_SERVER_PREFIX"),
+			AdminPass:        os.Getenv("MEDIA_SERVER_ADMIN_PASS"),
+			StorageRootPath:  os.Getenv("MEDIA_SERVER_STORAGE_ROOT_PATH"),
+			DataStorageRoute: os.Getenv("MEDIA_SERVER_DATA_ROUTE_STORAGE_ROUTE"),
 		},
 	}, nil
 }
 
 type MediaAPIConfig struct {
-	Host            string         `yaml:"host"`
-	Port            int            `yaml:"port"`
-	Prefix          string         `yaml:"prefix"`
-	AdminPass       string         `yaml:"adminPass"`
-	StorageRootPath string         `yaml:"storageRootPath"`
-	Routes          MediaAPIRoutes `yaml:"routes"`
-}
-
-type MediaAPIRoutes struct {
-	DataRoute Router `yaml:"dataRoute"`
-}
-
-type Router struct {
-	Name         string `yaml:"name"`
-	StorageRoute string `yaml:"storageRoute"`
+	Host             string `yaml:"host"`
+	Port             int    `yaml:"port"`
+	Prefix           string `yaml:"prefix"`
+	AdminPass        string `yaml:"adminPass"`
+	StorageRootPath  string `yaml:"storageRootPath"`
+	DataStorageRoute string `yaml:"storageRoute"`
 }
