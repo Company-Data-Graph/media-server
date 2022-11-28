@@ -76,6 +76,7 @@ func (api *MediaAPI) SetCorsHeaders(rw *http.ResponseWriter) {
 }
 
 func (api *MediaAPI) Run() {
+	http.HandleFunc(fmt.Sprintf("%s%s", api.Prefix, "/ping/"), api.ping)
 	http.HandleFunc(fmt.Sprintf("%s%s", api.Prefix, "/data/"), api.getDataByUrl)
 	http.HandleFunc(fmt.Sprintf("%s%s", api.Prefix, "/signin"), api.signIn)
 	http.HandleFunc(fmt.Sprintf("%s%s", api.Prefix, "/upload"), api.upload)
@@ -84,7 +85,7 @@ func (api *MediaAPI) Run() {
 	http.ListenAndServe(fmt.Sprintf("%s:%d", api.Host, api.Port), nil)
 }
 
-func (api *MediaAPI) Ping(rw http.ResponseWriter, r *http.Request) {
+func (api *MediaAPI) ping(rw http.ResponseWriter, r *http.Request) {
 	api.SetCorsHeaders(&rw)
 	fmt.Fprintln(rw, "pong")
 }
