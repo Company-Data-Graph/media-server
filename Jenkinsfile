@@ -16,9 +16,10 @@ pipeline {
         stage ('Checkout and create docker tag from git commit'){
             steps   {
                 //cleanWs()
-                checkout([$class: 'GitSCM', 
-                        branches: [[name: '*/*']],
-                        userRemoteConfigs: [[url: 'git@github.com:tcmoscow/media-server.git', credentialsId: 'git-mediaServer']]])
+                //checkout([$class: 'GitSCM', 
+                //        branches: [[name: '*']],
+                //        userRemoteConfigs: [[url: 'git@github.com:tcmoscow/media-server.git', credentialsId: 'git-mediaServer']]])
+                echo "This is dev branch"
                 sh 'git rev-parse HEAD > temp_hash'
                 script { 
                     if ( (params.IMAGE_TAG).length() > 0 ) {
