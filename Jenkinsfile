@@ -17,7 +17,7 @@ pipeline {
             steps   {
                 cleanWs()
                 checkout([$class: 'GitSCM', 
-                        branches: [[name: '*/*']],
+                        branches: [[name: '*']],
                         userRemoteConfigs: [[url: 'git@github.com:tcmoscow/media-server.git', credentialsId: 'git-mediaServer']]])
                 echo "This is dev branch"
                 sh 'git rev-parse HEAD > temp_hash'
